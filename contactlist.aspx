@@ -1,16 +1,3 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="contactlist.aspx.cs" Inherits="contactlist" %>
+    <asp:Literal ID="myMarsLiteral" runat="server"></asp:Literal>
 
-<!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title></title>
-</head>
-<body>
-    <form id="form1" runat="server">
-    <div>
-    
-    </div>
-    </form>
-</body>
-</html>

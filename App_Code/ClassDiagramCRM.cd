@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Person">
+    <Position X="4.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAEAAACBAAAAgAAAAAAAAAAIAAAAyAAAAKAAAAAg=</HashCode>
+      <FileName>App_Code\Person.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Address">
+    <Position X="6" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAACAAAAAABAgAAAQIAAAAAAAA=</HashCode>
+      <FileName>App_Code\Address.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Phone">
+    <Position X="7.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQAAAAEAAAAAAAAABAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>App_Code\Phone.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Controller">
+    <Position X="2" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAgAAEAAEAAAAAAAAAAEAA=</HashCode>
+      <FileName>App_Code\Controller.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
