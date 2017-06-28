@@ -1,0 +1,1 @@
+This repository contains a first start-up project in our course C#.net by Academy, a part of Academic Work
