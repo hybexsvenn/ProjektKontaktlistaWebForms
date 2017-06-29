@@ -90,7 +90,7 @@ public class Controller
                     string zip = myMarsReader["Zip"].ToString();
                     string city = myMarsReader["City"].ToString();
 
-                    Controller.contactList[Controller.contactList.Count - 1].addressList.Add(new Address(cid, type, street, zip, city));
+                    contactList[Controller.contactList.Count - 1].addressList.Add(new Address(cid, type, street, zip, city));
 
 
                 }
@@ -123,7 +123,6 @@ public class Controller
             {
                 myMarsConnection.Open();
 
-
                 SqlCommand myMarsCommand = new SqlCommand();
                 myMarsCommand.Connection = myMarsConnection;
 
@@ -137,12 +136,8 @@ public class Controller
                     string type = myMarsReader["Type"].ToString();
                     string number = myMarsReader["Number"].ToString();
 
-                    Controller.contactList[Controller.contactList.Count - 1].phoneList.Add(new Phone(cid, type, number));
-
-
+                    contactList[contactList.Count - 1].phoneList.Add(new Phone(cid, type, number));
                 }
-
-
             }
             //catch (Exception ex)
             //{
@@ -154,6 +149,70 @@ public class Controller
                 myMarsConnection.Close();
             }
 
+        }
+    }
+
+    public static void DeleteMarsian(string[] contactsDelete)
+    {
+        SqlConnection myMarsConnection = new SqlConnection();
+
+        myMarsConnection.ConnectionString = connectionString;
+
+        try
+        {
+            myMarsConnection.Open();
+
+
+            SqlCommand myMarsCommand = new SqlCommand();
+            myMarsCommand.Connection = myMarsConnection;
+
+            for (int i = 0; i < contactsDelete.Length - 1; i++)
+            {
+                myMarsCommand.CommandText = "delete from headCRM where headCRM.SSN = " + contactsDelete[i];
+
+                int rowaffected = myMarsCommand.ExecuteNonQuery();
+            }
+
+        }
+        //catch (Exception)
+        //{
+
+        //}
+
+        finally
+        {
+            myMarsConnection.Close();
+        }
+    }
+
+    public static void UpdateMarsian(string[] contactsUpdate)
+    {
+        SqlConnection myMarsConnection = new SqlConnection();
+
+        myMarsConnection.ConnectionString = connectionString;
+
+        try
+        {
+            myMarsConnection.Open();
+
+
+            SqlCommand myMarsCommand = new SqlCommand();
+            myMarsCommand.Connection = myMarsConnection;
+
+            myMarsCommand.CommandText = "update headCRM set Firstname = '" + contactsUpdate[0]+"', Lastname = '"+contactsUpdate[1]+"', SSN = '"+contactsUpdate[2]+"', Email = '"+contactsUpdate[3]+"'  where SSN =" + contactsUpdate[4];
+
+            int rowaffected = myMarsCommand.ExecuteNonQuery();
+
+
+        }
+        //catch (Exception)
+        //{
+
+        //}
+
+        finally
+        {
+            myMarsConnection.Close();
         }
     }
 

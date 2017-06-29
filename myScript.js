@@ -1,7 +1,9 @@
-﻿var columOneSorted = true;
-var columnTwoSorted = true;
-var columnThreeSorted = true;
-var allIsChecked = false;
+﻿
+
+$(document).ready(function () {
+    ReadMars();
+});
+
 
 function ReadMars() {
     $.getJSON("contactlist.aspx").done(function (data) {
@@ -75,139 +77,168 @@ function DeleteMarsian() {
         if (check) {
             checkedContact[count] = (myRow[i].children[3].innerHTML);
             count++;
-            
         }
     }
 
-    console.log(checkedContact);
+    //console.log(checkedContact);
     //****LOOPA igenom våra checked contacts och kontaka SQL
 
     //***Utforska möjligheten att ge tablerowsID=SSN
 
-    //if (myRow[1].children[0].attr('checked')) {
-    //    alert('hejjjjja');
-    //}
-
-    //console.log(myRow[1]);
-
-    //if (checkbox.check == 1) {
-    //    alert("Hallooooo");
-    //}
     
+    //$("#tableBody")
 
-    //for (var i = 0; i < myRow.length; i++) {
 
-    //    if (myRow[i].children[0]. checkbox == true;)
-    //    {
-    //        take row[i].td[4] ssn[i] --> SQL
-    //    }
+    SendToController(checkedContact);
 
-    //}
-    $("#tableBody")
 
 }
+
+
+function SendToController(checkCon) {
+
+    var data = {};
+    data.idToDelete = checkCon;
+    var adam="&ids=";
+
+    for (var i = 0; i < checkCon.length; i++) {
+        adam += checkCon[i] + ";";
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "contactlist.aspx?action=delete" + adam,
+        dataType: "json",
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        success: ReadMars,
+        error: function (error) {
+            alert("failed in opening XML file !!!");
+        }
+    });
+}
+
 
 function UpdateMarsian() {
 
-}
 
-function Sort(index){
-	
-	var sortBackwords = HandleIndex(index);
-    var switching = true;
-    var shouldSwitch;
-    var myTable = $("#myTable");
-    var myTableBody = $("#tableBody");
-    var rows;
-    var i;
-    var x;
-    var y;
-    while (switching) {
-
-        switching = false;
-        rows = myTableBody.$("tr");
-        for (var i = 1; i < rows.length - 1; i++) {
-            shouldSwitch = false;
-            x = rows[i].getElementsByTagName("td")[index];
-            y = rows[i + 1].getElementsByTagName("td")[index];
+    var myTable = $("#tableBody");
+    var myRow = myTable.children();
+    var temp;
 
 
-            if (sortBackwords == true) {
-                if (x.innerHTML.toLocaleLowerCase() < y.innerHTML.toLocaleLowerCase()) {
-
-                    shouldSwitch = true;
-                    break;
-                }
-            }
-            else {
-                if (x.innerHTML.toLocaleLowerCase() > y.innerHTML.toLocaleLowerCase()) {
-
-                    shouldSwitch = true;
-                    break;
-                }
+        for (var i = 0; i < myRow.length; i++) {
+            var check = $('#checkbox' + i).is(":checked");
+            if (check) {
+                temp = myRow[i];
             }
         }
-        if (shouldSwitch) {
+        $('#tableBody').children().remove();
+        $("#tableBody").append(temp);
+        var inputRow = "<tr><td></td><td><input type='textbox' id='inputFirst'></td>";
+        inputRow += "<td><input type='textbox' id='inputLast'></td>";
+        inputRow += "<td><input type='textbox' id='inputSSN'></td>";
+        inputRow += "<td><input type='textbox' id='inputEmail'></td>";
+        inputRow += "<td><input type='button' onclick='UpdateContact();' value='Update Contact' class='btn-info' id='btnInput'></td>";
+        inputRow += "</tr>";
+        
+        $("#tableBody").append(inputRow);
+        //$("#inputFirst") = "test";
 
-            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-            switching = true;
+        
+
+        
+        //console.log(UpdatedContactInfo);
+
+}
+function UpdateContact() {
+    var myTable = $("#tableBody");
+    var myRow = myTable.children();
+    var updatedContactInfo = [];
+
+    if ($("#inputFirst").val() != "")
+    {
+        updatedContactInfo[0] = $("#inputFirst").val();
+    }
+    else
+    {
+        updatedContactInfo[0] = myRow[0].children[1].innerHTML;
+    }
+
+    if ($("#inputLast").val() != "") {
+        updatedContactInfo[1] = $("#inputLast").val();
+    }
+    else {
+        updatedContactInfo[1] = myRow[0].children[2].innerHTML;
+    }
+
+    if ($("#inputSSN").val() != "") {
+        updatedContactInfo[2] = $("#inputSSN").val();
+    }
+    else {
+        updatedContactInfo[2] = myRow[0].children[3].innerHTML;
+    }
+
+    if ($("#inputEmail").val() != "") {
+        updatedContactInfo[3] = $("#inputEmail").val();
+    }
+    else {
+        updatedContactInfo[3] = myRow[0].children[4].innerHTML;
+    }
+
+    updatedContactInfo[4] = myRow[0].children[3].innerHTML;
+
+    console.log(updatedContactInfo);
+
+    var data = {};
+    data.idToUpdate = updatedContactInfo;
+    var adam = "&ids=";
+
+    for (var i = 0; i < updatedContactInfo.length; i++) {
+        adam += updatedContactInfo[i] + ";";
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "contactlist.aspx?action=edit" + adam,
+        dataType: "json",
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        success: ReadMars,
+        error: function (error) {
+            alert("Do some changes!");
         }
+    });
+    
+    //console.log(updatedContactInfo);
+
+
+}
+
+
+function SortContact(sortBy) {
+    var myTableBody = document.getElementById("tableBody");
+
+    var myRows = myTableBody.children;
+
+
+    for (var i = 0; i < myRows.length; i++) {
+
+        for (var j = i + 1; j < myRows.length; j++) {
+
+            var iName = myRows[i].children[sortBy].innerHTML;
+
+            var jName = myRows[j].children[sortBy].innerHTML;
+
+            if (iName.localeCompare(jName) > 0) {
+                myTableBody.insertBefore(myRows[j], myRows[i]);
+            }
+        }
+
     }
 
+
+
+
+
 }
-function HandleIndex(index) {
-    var bool = false;
-    switch (index) {
-
-        case 0:
-            if (columOneSorted == true) {
-                columOneSorted = false;
-            }
-            else {
-                columOneSorted = true;
-                bool = true;
-            }
-            break;
-        case 1:
-            if (columnTwoSorted == true) {
-                columnTwoSorted = false;
-            }
-            else {
-                columnTwoSorted = true;
-                bool = true;
-            }
-            break;
-        case 2:
-            if (columnThreeSorted == true) {
-                columnThreeSorted = false;
-            }
-            else {
-                columnThreeSorted = true;
-                bool = true;
-            }
-            break;
-    }
-    return bool;
-}
-function CheckALL(){
-	
-	if(allIsChecked = false)
-	{
-		alert("Check all boxes");
-		allIsChecked = true;
-	}
-	else if(allIsChecked = true)
-	{
-		alert("Uncheck all boxes");
-		allIsChecked = false;
-	}
-	
-}
-
-
-//$("#btn_submit").on("click", function (e) {
-//    e.preventDefault();
-//    //console.log("jaaaa");
-//    alert("JAAAADÅÅ");
-
-//});

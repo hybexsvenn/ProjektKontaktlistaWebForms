@@ -7,31 +7,42 @@
     <script src="Scripts/jquery-3.1.1.js"></script>
     <script src="Scripts/bootstrap.js"></script>
     <script src="myScript.js"></script>
+
+    <!--<style>
+        #checkbox0 {
+            display:none;
+        }
+    </style>-->
+
 </head>
 <body>
-    
+    <div id="wrapper">
+        <div id="header" class="page-header" style="text-align:center;">
+            <div class="btn-group-xs">
+                <input type="button" class="btn-group btn-info" value="Create" onclick="window.location.href='createMars.aspx'" />
+                <input type="button" class="btn-group btn-info" value="Read" onclick="ReadMars();" />
+                <input type="button" class="btn-group btn-info" value="Update" onclick="UpdateMarsian();" />
+                <input type="button" class="btn-group btn-info" value="Delete" onclick="DeleteMarsian();" />
+            </div>
+        </div>
+        <div class="container">
+            <table id="myTable" class="table">
+                    <thead>
+                        <tr class="active">
+                            <th><input id="checkboxHead" name='checkboxHead' type='checkbox' style="display:none;" onclick="CheckALL()"></th>
+                            <th onclick="SortContact(1)">Firstname</th>
+                            <th onclick="SortContact(2)">Lastname</th>
+                            <th onclick="SortContact(3)">SSN</th>
+                            <th onclick="SortContact(4)">Email</th>
+                            <th>Adress</th>
+                            <th>Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+            </table>
 
-    <table id="myTable" class="table">
-        <thead>
-            <tr class="active">
-                <th><input id="checkboxHead" name='checkboxHead' type='checkbox' onclick="CheckALL()"></th>
-                <th onclick="Sort(1)">Firstname</th>
-                <th onclick="Sort(2)">Lastname</th>
-                <th onclick="Sort(2)">SSN</th>
-                <th>Email</th>
-                <th>Adress</th>
-                <th>Phone</th>
-            </tr>
-        </thead>
-        <tbody id="tableBody">
-        </tbody>
-    </table>
-    <div class="btn-group-xs">
-        <input type="button" class="btn-group btn-info" value="Create" onclick="window.location.href='createMars.aspx'" />
-        <input type="button" class="btn-group btn-info" value="Read" onclick="ReadMars();" />
-        <input type="button" class="btn-group btn-info" value="Update" onclick="UpdateMarsian();" />
-        <input type="button" class="btn-group btn-info" value="Delete" onclick="DeleteMarsian();" />
+        </div>
+
     </div>
-
 </body>
 </html>

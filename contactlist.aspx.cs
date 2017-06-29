@@ -12,8 +12,31 @@ public partial class contactlist : System.Web.UI.Page
 {
     string connectionString = "Data Source=localhost;Initial Catalog=Mars;Integrated Security=True";
 
+
     protected void Page_Load(object sender, EventArgs e)
     {
+        if(Page.Request["action"] != null)
+        {
+            if(Page.Request["action"] == "delete")
+            {
+                string ids = Page.Request["ids"];
+
+                string[] toDelete = ids.Split(';');
+
+                Controller.DeleteMarsian(toDelete);
+            }
+            else if (Page.Request["action"] == "edit")
+            {
+                string ids = Page.Request["ids"];
+
+                string[] toUpdate = ids.Split(';');
+
+                Controller.UpdateMarsian(toUpdate);
+            }
+        }
+
+
+
         Controller.UploadFromMarsHeadCRM();
 
 
