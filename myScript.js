@@ -1,4 +1,9 @@
-﻿function ReadMars() {
+﻿var columOneSorted = true;
+var columnTwoSorted = true;
+var columnThreeSorted = true;
+var allIsChecked = false;
+
+function ReadMars() {
     $.getJSON("contactlist.aspx").done(function (data) {
         $('#tableBody').children().remove();
 
@@ -104,6 +109,97 @@ function DeleteMarsian() {
 
 function UpdateMarsian() {
 
+}
+
+function Sort(index){
+	
+	var sortBackwords = HandleIndex(index);
+    var switching = true;
+    var shouldSwitch;
+    var myTable = $("#myTable");
+    var myTableBody = $("#tableBody");
+    var rows;
+    var i;
+    var x;
+    var y;
+    while (switching) {
+
+        switching = false;
+        rows = myTableBody.$("tr");
+        for (var i = 1; i < rows.length - 1; i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("td")[index];
+            y = rows[i + 1].getElementsByTagName("td")[index];
+
+
+            if (sortBackwords == true) {
+                if (x.innerHTML.toLocaleLowerCase() < y.innerHTML.toLocaleLowerCase()) {
+
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+            else {
+                if (x.innerHTML.toLocaleLowerCase() > y.innerHTML.toLocaleLowerCase()) {
+
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+        }
+        if (shouldSwitch) {
+
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+        }
+    }
+
+}
+function HandleIndex(index) {
+    var bool = false;
+    switch (index) {
+
+        case 0:
+            if (columOneSorted == true) {
+                columOneSorted = false;
+            }
+            else {
+                columOneSorted = true;
+                bool = true;
+            }
+            break;
+        case 1:
+            if (columnTwoSorted == true) {
+                columnTwoSorted = false;
+            }
+            else {
+                columnTwoSorted = true;
+                bool = true;
+            }
+            break;
+        case 2:
+            if (columnThreeSorted == true) {
+                columnThreeSorted = false;
+            }
+            else {
+                columnThreeSorted = true;
+                bool = true;
+            }
+            break;
+    }
+    return bool;
+}
+function CheckALL(){
+	
+	if(allIsChecked = false)
+	{
+		alert("Check all boxes");
+	}
+	else
+	{
+		alert("Uncheck all boxes");
+	}
+	
 }
 
 
