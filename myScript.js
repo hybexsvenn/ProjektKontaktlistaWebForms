@@ -194,10 +194,12 @@ function CheckALL(){
 	if(allIsChecked = false)
 	{
 		alert("Check all boxes");
+		allIsChecked = true;
 	}
-	else
+	else if(allIsChecked = true)
 	{
 		alert("Uncheck all boxes");
+		allIsChecked = false;
 	}
 	
 }
