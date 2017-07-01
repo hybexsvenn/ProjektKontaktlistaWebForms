@@ -1,4 +1,7 @@
-﻿
+﻿var sortFirst = false;
+var sortLast = false;
+var sortSSN = false;
+var sortEmail = false;
 
 $(document).ready(function () {
     ReadMars();
@@ -217,10 +220,13 @@ function UpdateContact() {
 
 
 function SortContact(sortBy) {
+    
+    var sortBackwords = HandleIndex(sortBy);
+    
     var myTableBody = document.getElementById("tableBody");
 
     var myRows = myTableBody.children;
-
+    
 
     for (var i = 0; i < myRows.length; i++) {
 
@@ -230,15 +236,73 @@ function SortContact(sortBy) {
 
             var jName = myRows[j].children[sortBy].innerHTML;
 
-            if (iName.localeCompare(jName) > 0) {
-                myTableBody.insertBefore(myRows[j], myRows[i]);
+            if (sortBackwords) {
+
+                if (iName.localeCompare(jName) < 0) {
+                    myTableBody.insertBefore(myRows[j], myRows[i]);
+                }
             }
+            else
+            {
+                if (iName.localeCompare(jName) > 0) {
+                    myTableBody.insertBefore(myRows[j], myRows[i]);
+                }
+            }
+            
         }
 
     }
-
-
-
-
-
+    
 }
+function HandleIndex(index) {
+
+    var sortBackword = false;
+
+    switch (index) {
+
+        case 1:
+            if (sortFirst) {
+                sortBackword = true;
+                sortFirst = false;
+            }
+            else {
+                sortBackword = false;
+                sortFirst = true;
+            }
+            break;
+        case 2:
+            if (sortLast) {
+                sortBackword = true;
+                sortLast = false;
+            }
+            else {
+                sortBackword = false;
+                sortLast = true;
+            }
+            break;
+        case 3:
+            if (sortSSN) {
+                sortBackword = true;
+                sortSSN = false;
+            }
+            else {
+                sortBackword = false;
+                sortSSN = true;
+            }
+            break;
+        case 4:
+            if (sortEmail) {
+                sortBackword = true;
+                sortEmail = false;
+            }
+            else {
+                sortBackword = false;
+                sortEmail = true;
+            }
+            break;
+
+    }
+
+    return sortBackword;
+}
+
