@@ -118,10 +118,11 @@
                         <tr>
                             <td class="auto-style3">SSN:</td>
                             <td class="auto-style4">
-                                <asp:TextBox ID="ssn" runat="server"></asp:TextBox>
+                                <asp:TextBox ID="ssn" runat="server" AutoPostBack="True" OnTextChanged="ssn_TextChanged"></asp:TextBox>
                             </td>
                             <td class="auto-style5">
                                 <asp:RequiredFieldValidator ID="ssn_fail" runat="server" ControlToValidate="ssn" ErrorMessage="SSN required" ForeColor="Red" ValidationGroup="a1"></asp:RequiredFieldValidator>
+                                <asp:Label ID="lblSSNNotValid" runat="server" ForeColor="Red" Text="Label" Visible="False"></asp:Label>
                             </td>
                         </tr>
                         <tr>

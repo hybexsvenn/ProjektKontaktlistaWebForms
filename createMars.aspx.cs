@@ -18,39 +18,131 @@ public partial class _Default : System.Web.UI.Page
 
     protected void btn_submit_Click(object sender, EventArgs e)
     {
-        SqlConnection myConnection = new SqlConnection();
-        myConnection.ConnectionString =  connectionString;
+        bool ssnIsValid = CheckSSNValidation();
+        bool ssnIsUnique = CheckIfSSNIsUnique();
+
+        if (ssnIsValid && ssnIsUnique)
+        {
+
+            SqlConnection myConnection = new SqlConnection();
+            myConnection.ConnectionString = connectionString;
+
+            try
+            {
+                myConnection.Open();
+
+                SqlCommand myCommand = new SqlCommand();
+
+                myCommand.Connection = myConnection;
+
+                myCommand.CommandText = "insert into headCRM (Firstname, Lastname, SSN, Email) values ('" + firstname.Text + "', '" + lastname.Text + "', '" + ssn.Text + "', '" + email.Text + "')";
+
+                SqlDataReader myReader = myCommand.ExecuteReader();
+
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                myConnection.Close();
+            }
+
+            Controller.UploadFromMarsHeadCRM();
+
+
+            //TODO: Javascript för att ta fram div
+
+            address_panel.Visible = true;
+        }
+        else
+        {
+            lblSSNNotValid.Text = "Invalid SSN";
+            lblSSNNotValid.Visible = true;
+
+        }
+
+
+    }
+
+    private bool CheckIfSSNIsUnique()
+    {
+        bool isUnique = true;
+
+        SqlConnection myMarsConnection = new SqlConnection();
+
+        myMarsConnection.ConnectionString = connectionString;
 
         try
         {
-            myConnection.Open();
+            myMarsConnection.Open();
+            
+            SqlCommand myMarsCommand = new SqlCommand();
+            myMarsCommand.Connection = myMarsConnection;
 
-            SqlCommand myCommand = new SqlCommand();
+            myMarsCommand.CommandText = "select SSN from headCRM";
 
-            myCommand.Connection = myConnection;
+            SqlDataReader myMarsReader = myMarsCommand.ExecuteReader();
 
-            myCommand.CommandText = "insert into headCRM (Firstname, Lastname, SSN, Email) values ('"+firstname.Text+"', '"+lastname.Text+"', '"+ssn.Text+"', '"+email.Text+"')";
+            
 
-            SqlDataReader myReader = myCommand.ExecuteReader();
+            while (myMarsReader.Read())
+            {
+                
+                if (myMarsReader["SSN"].ToString() == ssn.Text)
+                {
+                    isUnique = false;
+                    break;
+                }
+
+            }
+
 
         }
-        catch (Exception)
-        {
+        //catch (Exception)
+        //{
 
-        }
+        //}
+
         finally
         {
-            myConnection.Close();
+            myMarsConnection.Close();
+        }
+        
+
+        return isUnique;
+    }
+
+    private bool CheckSSNValidation()
+    {
+        bool isValid = false;
+
+        if (IsNumeric(ssn.Text))
+        {
+            if (ssn.Text.Length == 6)
+            {
+                isValid = true;
+            }
         }
 
-        Controller.UploadFromMarsHeadCRM();
+        return isValid;
+    }
 
+    private bool IsNumeric(string inputString)
+    {
+        bool isNumeric = true;
 
-        //TODO: Javascript för att ta fram div
+        for (int i = 0; i < inputString.Length; i++)
+        {
+            if (Char.IsDigit(inputString[i]) != true)
+            {
+                isNumeric = false;
+                break;
+            }
+        }
 
-        address_panel.Visible = true;
-
-
+        return isNumeric;
     }
 
     protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
@@ -72,7 +164,7 @@ public partial class _Default : System.Web.UI.Page
 
             myCommand.Connection = myConnection;
 
-            
+
             myCommand.CommandText = string.Format("select * from headCRM where headCRM.SSN='{0}'", ssn.Text);
             SqlDataReader myMarsReader = myCommand.ExecuteReader();
 
@@ -155,5 +247,12 @@ public partial class _Default : System.Web.UI.Page
     protected void btn_home_Click1(object sender, EventArgs e)
     {
         Server.Transfer("index.html");
+    }
+
+
+
+    protected void ssn_TextChanged(object sender, EventArgs e)
+    {
+        lblSSNNotValid.Visible = false;
     }
 }
